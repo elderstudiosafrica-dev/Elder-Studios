@@ -1,0 +1,49 @@
+"use client";
+
+/**
+ * Drop-in replacement for <HeroFigure /> once you have the real model.
+ *
+ * 1. Put the model at  public/models/character.glb
+ * 2. Rename this file to  Character.tsx
+ * 3. In Scene.tsx, swap  <HeroFigure ... />  for  <Character ... />
+ *
+ * Plays the model's first animation clip as an idle loop and gently turns the
+ * character toward the cursor.
+ */
+
+import { useAnimations, useGLTF, Float } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
+import { useEffect, useRef } from "react";
+import * as THREE from "three";
+import { scrollState } from "@/lib/scrollStore";
+
+useGLTF.preload("/models/character.glb");
+
+export default function Character({ reducedMotion }: { reducedMotion: boolean }) {
+  const group = useRef<THREE.Group>(null);
+  const { scene, animations } = useGLTF("/models/character.glb");
+  const { actions, names } = useAnimations(animations, group);
+
+  useEffect(() => {
+    if (!reducedMotion && names[0]) actions[names[0]]?.reset().fadeIn(0.5).play();
+    return () => {
+      if (names[0]) actions[names[0]]?.fadeOut(0.3);
+    };
+  }, [actions, names, reducedMotion]);
+
+  useFrame((_, delta) => {
+    if (!group.current || reducedMotion) return;
+    // ease toward the pointer for a subtle "looks at you" effect
+    const targetY = scrollState.pointerX * 0.4;
+    group.current.rotation.y += (targetY - group.current.rotation.y) * delta * 2;
+  });
+
+  return (
+    <Float speed={reducedMotion ? 0 : 1.2} rotationIntensity={0} floatIntensity={0.4}>
+      <group ref={group} position={[2.2, -1.4, -0.5]} scale={1.4}>
+        <primitive object={scene} />
+        <pointLight color="#7fd4d4" intensity={5} distance={8} decay={1.4} position={[0, 1.5, 1.5]} />
+      </group>
+    </Float>
+  );
+}

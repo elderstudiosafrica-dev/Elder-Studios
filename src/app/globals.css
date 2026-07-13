@@ -1,26 +1,104 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@font-face {
+  font-family: "Halloween Wonders";
+  src:
+    local("Halloween Wonders"),
+    local("HalloweenWonders"),
+    url("/fonts/HalloweenWonders.woff2") format("woff2"),
+    url("/fonts/Halloween Wonders.woff2") format("woff2"),
+    url("/fonts/HalloweenWonders.ttf") format("truetype"),
+    url("/fonts/Halloween Wonders.ttf") format("truetype");
+  font-display: swap;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ------------------------------------------------------------------ */
+/*  Elder Studios — VEILED design tokens                               */
+/*  Dark, atmospheric horror palette. Cold teal accent used sparingly. */
+/* ------------------------------------------------------------------ */
+@theme {
+  --color-ink: #07090c; /* near-black base */
+  --color-ink-2: #0b1216; /* deep navy-teal */
+  --color-ink-3: #101c22; /* raised surfaces */
+  --color-mist: #d7e0e3; /* primary text */
+  --color-mist-dim: #8a9aa1; /* muted text */
+  --color-fog: #5d6f76; /* faint text / lines */
+  --color-glow: #7fd4d4; /* eerie cold accent */
+  --color-ember: #e0894b; /* warm firelight accent */
+
+  --font-sans: var(--font-sans);
+  --font-hand-fallback: var(--font-hand-fallback);
+  --font-halloween: var(--font-halloween);
+  --font-brand: var(--font-veiled);
+  /* Halloween Wonders group: tagline, LEARN MORE, description, team roles */
+  --font-display: var(--font-halloween), var(--font-sans);
+  /* Rounded hand group: pull quote, team names */
+  --font-hand: var(--font-hand-fallback), var(--font-sans);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: auto; /* Lenis owns smooth scroll */
+  background: var(--color-ink);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Lenis: disable native smooth scroll while the lib is active */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* The VEILED wordmark face */
+.font-veiled {
+  font-family: var(--font-veiled);
+}
+.font-brand {
+  font-family: var(--font-brand);
+}
+
+/* Utility: scratchy, slightly uneven heading look */
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: 0;
+}
+.font-hand {
+  font-family: var(--font-hand);
+}
+
+/* Hide default cursor when custom cursor is active (desktop only) */
+@media (hover: hover) and (pointer: fine) {
+  body.custom-cursor,
+  body.custom-cursor * {
+    cursor: none;
+  }
+}
+
+/* Thin, faint scrollbar that suits the dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ink);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-ink-3);
+  border-radius: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

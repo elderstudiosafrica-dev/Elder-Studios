@@ -1,0 +1,38 @@
+# Where to drop real assets
+
+Until a file exists here, the site shows a styled placeholder (gradient panel or
+text wordmark) instead of a broken image — so it always looks intentional.
+
+All paths below are referenced from `src/lib/content.ts`. Drop files with these
+exact names, or edit `content.ts` to point at your own names.
+
+## Game screenshots → `public/screens/`
+- `shot-1.jpg`, `shot-2.jpg`, `shot-3.jpg`, `shot-4.jpg`
+- ~1600×900 (16:9), JPG/WebP.
+
+## Team photos → `public/team/`
+- `makeda.jpg`, `joshua.jpg`, `bisrat.jpg`, `gabriella.jpg`
+- Portrait 3:4, ~600×800.
+
+## "About" event photos → `public/about/`
+- `event-1.jpg`, `event-2.jpg`
+
+## Partner logos → `public/partners/`
+- `france.svg`, `goethe.svg`, `qene.svg`, `africa.svg`,
+  `addis-gamer-week.svg`, `comicade.svg`
+- SVG preferred (they're shown white/grayscale). PNG works too.
+
+## Trailer
+- Set the YouTube video id in `src/lib/content.ts` → `game.youtubeId`.
+
+## Logo / crest
+- A placeholder crest is drawn in `src/components/ui/Crest.tsx`.
+  Replace its SVG paths with the real Elder Studios logo, or drop an SVG and
+  swap the component to render it.
+
+## 3D character model (the big "wow") → `public/models/`
+- Export the VEILED character as `character.glb` (GLTF Binary), ideally with an
+  idle animation. See `src/components/three/Character.tsx.example` for the
+  drop-in loader — rename it to `Character.tsx` and use it in `Scene.tsx` in
+  place of `<HeroFigure />`.
+- Keep it under ~5–8 MB if possible (use Draco/meshopt compression).
