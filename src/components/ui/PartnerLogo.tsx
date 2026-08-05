@@ -16,7 +16,7 @@ export default function PartnerLogo({ name, src }: { name: string; src: string }
 
   return (
     <div
-      className="flex h-36 items-center opacity-90 grayscale transition-opacity duration-300 hover:opacity-100"
+      className="flex h-28 shrink-0 items-center opacity-90 transition-opacity duration-300 hover:opacity-100 md:h-[13.5rem]"
       title={name}
     >
       {failed ? (
@@ -29,7 +29,7 @@ export default function PartnerLogo({ name, src }: { name: string; src: string }
           ref={imgRef}
           src={src}
           alt={name}
-          className="max-h-32 w-auto"
+          className="max-h-24 w-auto md:max-h-[12rem]"
           onError={() => setFailed(true)}
         />
       )}

@@ -7,7 +7,7 @@ export default function Footer() {
   return (
     <footer
       id="contact"
-      className="relative z-10 flex flex-col items-center gap-8 overflow-hidden bg-gradient-to-b from-[#101a20] to-[#05080b] px-6 py-24 text-center md:py-28"
+      className="relative z-10 flex flex-col items-center gap-8 overflow-hidden bg-gradient-to-b from-[#101d22] to-[#05080b] px-6 py-24 text-center md:py-28"
     >
       <Crest className="h-20 w-20 text-mist" />
 

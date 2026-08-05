@@ -12,3 +12,23 @@ export const scrollState = {
   pointerX: 0,
   pointerY: 0,
 };
+
+type Scroller = { start: () => void; stop: () => void };
+
+let scroller: Scroller | null = null;
+
+/**
+ * SmoothScroll hands its Lenis instance over here on mount. Lenis runs its own
+ * virtual scroll loop, so setting `overflow: hidden` on an ancestor is not
+ * enough to freeze the page behind a modal — the instance itself has to be
+ * stopped, and it is otherwise not reachable from other components.
+ */
+export function registerScroller(instance: Scroller | null) {
+  scroller = instance;
+}
+
+/** Freeze/unfreeze page scrolling, e.g. while the mobile menu is open. */
+export function setScrollLocked(locked: boolean) {
+  if (locked) scroller?.stop();
+  else scroller?.start();
+}

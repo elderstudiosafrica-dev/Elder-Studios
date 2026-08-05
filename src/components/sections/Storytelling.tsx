@@ -1,64 +1,60 @@
-/* eslint-disable @next/next/no-img-element */
-import { aboutPhotos, partners } from "@/lib/content";
+import { partners } from "@/lib/content";
 import Reveal from "@/components/ui/Reveal";
 import PartnerLogo from "@/components/ui/PartnerLogo";
+import CubesPair from "@/components/ui/CubesPair";
+import RotatingPhotos from "@/components/ui/RotatingPhotos";
 
 export default function Storytelling() {
+  // Bottom padding is deeper than the top's: the decorative cubes sit
+  // absolutely at bottom-16 and are ~115px tall, so the section needs at least
+  // that much clear space under the logo strip or they ride up over it.
   return (
-    <section className="relative overflow-hidden bg-[#101a20] px-6 py-32 md:px-16 md:py-44">
-      <img
-        src="/cubes-pair.png"
-        alt=""
-        aria-hidden="true"
-        className="pointer-events-none absolute left-[10%] top-24 hidden w-52 md:block"
-      />
+    <section className="relative overflow-hidden bg-[#101d22] px-6 py-32 md:px-16 md:pt-44 md:pb-56">
+      <CubesPair className="absolute left-[10%] top-24 hidden w-52 md:block" />
 
       <div className="relative mx-auto max-w-[1600px]">
-        {/* event photos — big, interlocking, spanning to the right edge */}
-        <Reveal delay={0.15} className="flex items-center justify-end">
-          <img
-            src={aboutPhotos[2]}
-            alt="The team at the Ethio-French Crea-Tech Forum"
-            className="w-64 shrink-0 drop-shadow-[0_24px_50px_rgba(0,0,0,0.6)] md:w-[35rem]"
-          />
-          <img
-            src={aboutPhotos[1]}
-            alt="The team with a mentor"
-            className="-ml-24 w-64 shrink-0 drop-shadow-[0_24px_50px_rgba(0,0,0,0.6)] md:-ml-64 md:w-[35rem]"
-          />
-          <img
-            src={aboutPhotos[0]}
-            alt="Elder Studios receiving an award"
-            className="-ml-24 w-64 shrink-0 drop-shadow-[0_24px_50px_rgba(0,0,0,0.6)] md:-ml-64 md:w-[35rem]"
-          />
-        </Reveal>
-
-        {/* heading overlaid on the left, on top of the photos (like the design) */}
-        <div className="absolute inset-y-0 left-0 z-10 flex items-center">
+        {/* Heading. From md up it is lifted out of flow and overlaid on the left
+            of the photos, as in the design. On mobile the photo ribbon is only
+            ~152px tall, so overlaying five lines of display type on it is
+            unreadable — there it stays in flow and simply sits above. It leads
+            in the DOM so that stacking order comes out right without `order`. */}
+        <div className="relative z-10 mb-12 flex items-center md:absolute md:inset-y-0 md:left-0 md:mb-0">
           <Reveal>
-            <h2 className="max-w-[24rem] font-brand text-5xl uppercase leading-[1.03] text-white drop-shadow-[0_2px_24px_rgba(0,0,0,0.95)] md:max-w-[46rem] md:text-[3.9rem]">
-              Defining the new way of storytelling in gaming
+            <h2 className="max-w-[24rem] font-brand text-4xl uppercase leading-[1.03] text-white drop-shadow-[0_2px_24px_rgba(0,0,0,0.95)] sm:text-5xl md:max-w-[46rem] md:text-[3.9rem]">
+              Where immersive worlds become unforgettable stories.
             </h2>
           </Reveal>
         </div>
+
+        {/* Event photos — three interlocking parallelograms that cycle through
+            batches. Panel geometry and the reasoning behind it live in
+            RotatingPhotos. */}
+        <Reveal delay={0.15}>
+          <RotatingPhotos />
+        </Reveal>
       </div>
 
-      {/* partner / supporter logos */}
-      <Reveal delay={0.2}>
-        <div className="mx-auto mt-24 flex max-w-[1500px] flex-wrap items-center justify-center gap-x-10 gap-y-10 md:mt-28 md:gap-x-12">
-          {partners.map((p) => (
-            <PartnerLogo key={p.name} name={p.name} src={p.src} />
-          ))}
+      {/* Partner / supporter logos — infinite right-to-left marquee, running
+          edge to edge as in the design (the negative margins on the wrapper
+          cancel the section padding).
+
+          The visible window is still capped below the width of one full set of
+          logos, so the wrap-around copy can never be on screen at the same time
+          as the original. One set is ~1730px at these sizes, hence the cap —
+          which means the strip is genuinely full-bleed on any realistic
+          viewport and only starts inset beyond ~1730px. */}
+      <Reveal delay={0.2} className="-mx-6 md:-mx-16">
+        <div className="relative mx-auto mt-24 max-w-[1730px] overflow-hidden md:mt-28 mask-[linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]">
+          <div className="flex w-max animate-[marquee-left_32s_linear_infinite] items-center gap-x-12 hover:[animation-play-state:paused] md:gap-x-20">
+            {[...partners, ...partners, ...partners].map((p, i) => (
+              <PartnerLogo key={`${p.name}-${i}`} name={p.name} src={p.src} />
+            ))}
+          </div>
         </div>
       </Reveal>
 
       {/* cube outlines, bottom-right below the logos (like the design) */}
-      <img
-        src="/cubes-pair.png"
-        alt=""
-        aria-hidden="true"
-        className="pointer-events-none absolute bottom-16 right-[6%] hidden w-52 md:block"
-      />
+      <CubesPair className="absolute bottom-16 right-[6%] hidden w-52 md:block" />
     </section>
   );
 }

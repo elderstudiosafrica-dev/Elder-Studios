@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import Lenis from "lenis";
-import { scrollState } from "@/lib/scrollStore";
+import { registerScroller, scrollState } from "@/lib/scrollStore";
 
 /**
  * Momentum smooth-scroll (Lenis) for the whole document. Also feeds normalized
@@ -18,6 +18,8 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       smoothWheel: !reduced,
       lerp: 0.1,
     });
+
+    registerScroller(lenis);
 
     lenis.on("scroll", ({ scroll, limit, velocity }) => {
       scrollState.progress = limit > 0 ? scroll / limit : 0;
@@ -41,6 +43,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", onPointer);
+      registerScroller(null);
       lenis.destroy();
     };
   }, []);

@@ -41,6 +41,71 @@ html {
   background: var(--color-ink);
 }
 
+/* Carousel arrow nudge — hints the arrows are interactive without being loud. */
+@keyframes arrow-bounce-left {
+  0%,
+  100% {
+    transform: translate(0, -50%);
+  }
+  50% {
+    transform: translate(-6px, -50%);
+  }
+}
+@keyframes arrow-bounce-right {
+  0%,
+  100% {
+    transform: translate(0, -50%);
+  }
+  50% {
+    transform: translate(6px, -50%);
+  }
+}
+
+/* Decorative cube outlines — slow idle bob + tilt, layered under the scroll
+   parallax in CubesPair. Two variants on co-prime-ish durations so the pair
+   never visibly syncs up. */
+@keyframes cube-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(2.5deg);
+  }
+}
+@keyframes cube-float-alt {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(9px) rotate(-2deg);
+  }
+}
+
+/* Event photos — slow Ken-Burns drift under the crossfade in RotatingPhotos.
+   Runs for the whole time a batch is on screen, so the panels are never
+   completely static. */
+@keyframes photo-drift {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
+  }
+}
+
+/* Partner logo strip — infinite right-to-left scroll. Track is the logo list
+   tripled, so translating by -1/3 loops seamlessly (one full copy-width). */
+@keyframes marquee-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-33.3334%);
+  }
+}
+
 body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;

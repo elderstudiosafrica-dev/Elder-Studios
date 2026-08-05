@@ -6,14 +6,14 @@
 export const nav = [
   { label: "Games", href: "#games" },
   { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
+  { label: "Contact", href: "tel:+251910975199" },
 ];
 
 export const socials = [
   { key: "instagram", label: "Instagram", href: "https://www.instagram.com/elder.studios/" },
   { key: "discord", label: "Discord", href: "https://discord.gg/7V8Yp2ayFP" },
   { key: "linkedin", label: "LinkedIn", href: "https://www.linkedin.com/company/elder-studios/" },
-  { key: "mail", label: "Email", href: "mailto:hello@elderstudios.com" },
+  { key: "mail", label: "Email", href: "mailto:elderstudiosafrica@gmail.com" },
 ];
 
 export const game = {
@@ -57,11 +57,31 @@ export const team = [
   },
 ];
 
-/** Event / award photos for the storytelling section (pre-skewed transparent PNGs). */
-export const aboutPhotos = [
-  "/about/event-1.png",
-  "/about/event-2.png",
-  "/about/event-3.png",
+/**
+ * Event / award photos for the storytelling section, as batches of three.
+ *
+ * The section shows one batch at a time in three interlocking parallelogram
+ * panels, cycling through the batches. Each entry is a pre-skewed transparent
+ * image, and the three panels have *different* silhouettes — so position within
+ * a batch is meaningful: index 0 is always the left panel, 1 the middle, 2 the
+ * right. A photo cut for one panel will not fit another.
+ */
+export const aboutPhotoBatches: { src: string; alt: string }[][] = [
+  [
+    { src: "/about/event-3.png", alt: "The team at the Ethio-French Crea-Tech Forum" },
+    { src: "/about/event-2.png", alt: "The team with a mentor" },
+    { src: "/about/event-1.png", alt: "Elder Studios receiving an award" },
+  ],
+  [
+    { src: "/about/event-b2-1.webp", alt: "The Ethio-French Crea-Tech Forum cohort on stage" },
+    { src: "/about/event-b2-2.webp", alt: "The team showing VEILED at their booth" },
+    { src: "/about/event-b2-3.webp", alt: "The team with an award at the Crea-Tech Forum" },
+  ],
+  [
+    { src: "/about/event-b3-1.webp", alt: "Presenting VEILED to a room of players" },
+    { src: "/about/event-b3-2.webp", alt: "Players trying VEILED at the studio booth" },
+    { src: "/about/event-b3-3.webp", alt: "The team at Craft Addis" },
+  ],
 ];
 
 /** Partner / supporter logos (white, transparent). */

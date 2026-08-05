@@ -12,17 +12,19 @@ export default function ImageFrame({
   label,
   className = "",
   imgClassName = "",
+  frameClassName = "bg-ink-2",
 }: {
   src: string;
   alt: string;
   label?: string;
   className?: string;
   imgClassName?: string;
+  frameClassName?: string;
 }) {
   const [failed, setFailed] = useState(false);
 
   return (
-    <div className={`relative overflow-hidden bg-ink-2 ${className}`}>
+    <div className={`relative overflow-hidden ${frameClassName} ${className}`}>
       {!failed ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
