@@ -11,7 +11,9 @@ exact names, or edit `content.ts` to point at your own names.
 - ~1600×900 (16:9), JPG/WebP.
 
 ## Team photos → `public/team/`
-- `makeda.jpg`, `joshua.jpg`, `bisrat.jpg`, `gabriella.jpg`
+- `makeda.png`, `joshua.png`, `bisrat.png`, `dagmawi.png`
+- 1198×1104 PNG with a torn-paper alpha edge. To add a member, copy the alpha
+  channel off an existing portrait so the torn edge matches.
 - Portrait 3:4, ~600×800.
 
 ## "About" event photos → `public/about/`

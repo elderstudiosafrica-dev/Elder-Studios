@@ -51,9 +51,9 @@ export const team = [
     photo: "/team/bisrat.png",
   },
   {
-    name: "Gabriella Wayye",
-    roles: ["3D Artist & Animator"],
-    photo: "/team/gabriella.png",
+    name: "Dagmawi Tsegaye",
+    roles: ["Environment and Prop Artist"],
+    photo: "/team/dagmawi.png",
   },
 ];
 

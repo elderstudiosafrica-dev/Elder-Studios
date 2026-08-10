@@ -10,7 +10,9 @@ export default function Storytelling() {
   // that much clear space under the logo strip or they ride up over it.
   return (
     <section className="relative overflow-hidden bg-[#101d22] px-6 py-32 md:px-16 md:pt-44 md:pb-56">
-      <CubesPair className="absolute left-[10%] top-24 hidden w-52 md:block" />
+      {/* top-6, not top-24: the photo row is taller now and starts at the
+          section's top padding, so at top-24 the cubes sat behind it. */}
+      <CubesPair className="absolute left-[10%] top-6 hidden w-52 md:block" />
 
       <div className="relative mx-auto max-w-[1600px]">
         {/* Heading. From md up it is lifted out of flow and overlaid on the left

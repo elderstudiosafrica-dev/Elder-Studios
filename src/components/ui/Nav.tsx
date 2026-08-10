@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { nav } from "@/lib/content";
 import { setScrollLocked } from "@/lib/scrollStore";
-import Crest from "./Crest";
 import Social from "./Social";
 
 export default function Nav() {
@@ -62,19 +61,21 @@ export default function Nav() {
           left only 544px for the wordmark, links and socials at a 768px
           viewport, which overflowed the document by ~21px. */}
       <nav className="mx-auto flex max-w-[1680px] items-center justify-between px-6 py-6 sm:px-8 sm:py-8 md:px-12 md:py-10 lg:px-20 xl:px-28 xl:py-12">
-        {/* z-50 keeps the wordmark above the menu overlay (z-40) when it opens. */}
+        {/* The lockup artwork already contains the crest and the wordmark, so
+            this is a single image rather than the two composed elements.
+            z-50 keeps it above the menu overlay (z-40) when that opens. */}
         <a
           href="#top"
           onClick={() => setOpen(false)}
-          className="relative z-50 flex items-center gap-3 sm:gap-4 md:gap-5"
+          className="relative z-50 flex items-center"
           aria-label="Elder Studios home"
         >
-          <Crest className="h-11 w-9 text-mist sm:h-14 sm:w-11 md:h-16 md:w-12" />
-          <span className="font-brand text-xl font-black leading-[0.95] tracking-[0.08em] text-mist sm:text-2xl md:text-[2.05rem]">
-            ELDER
-            <br />
-            STUDIOS
-          </span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logo.png"
+            alt="Elder Studios"
+            className="h-11 w-auto sm:h-14 md:h-16"
+          />
         </a>
 
         <ul className="hidden items-center gap-10 md:flex lg:gap-14 xl:gap-20">

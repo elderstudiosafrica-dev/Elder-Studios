@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
 import { game } from "@/lib/content";
 import MagneticButton from "@/components/ui/MagneticButton";
+import heroBackground from "../../../public/hero-bg.jpg";
 
 export default function Hero() {
   const reduced = useReducedMotion();
@@ -15,18 +16,22 @@ export default function Hero() {
     >
       <div className="absolute inset-0">
         <Image
-          src="/hero-bg.jpg"
+          src={heroBackground}
           alt=""
           fill
           preload
           sizes="100vw"
           className="object-cover object-center"
         />
+        {/* Kept light across the top two thirds so the key art actually reads —
+            it is already a dark, moody render and does not need help. The
+            weight is all in the last third, where it has to reach solid #030303
+            to meet the Trailer section without a seam. */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(to bottom, rgba(3,3,3,0.15) 0%, rgba(3,3,3,0.35) 35%, rgba(3,3,3,0.65) 60%, rgba(3,3,3,0.92) 80%, #030303 92%, #030303 100%)",
+              "linear-gradient(to bottom, rgba(3,3,3,0.15) 0%, rgba(3,3,3,0.12) 40%, rgba(3,3,3,0.3) 62%, rgba(3,3,3,0.72) 80%, rgba(3,3,3,0.95) 90%, #030303 96%, #030303 100%)",
           }}
         />
       </div>

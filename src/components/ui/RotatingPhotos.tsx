@@ -29,17 +29,21 @@ const FADE_MS = 1000;
  * sizing them by *width* (the obvious thing) gives three different heights and a
  * row that steps upward to the right. The design has all three the same height,
  * tops and bottoms flush, with the middle panel dropped below the line — hence
- * a uniform `h-88` plus a per-panel `aspect-*` matching that panel's artwork,
- * and `items-start` on the row to align the outer two.
+ * a uniform `h-105` plus a per-panel `aspect-*` matching that panel's artwork,
+ * and `items-start` on the row to align the outer two. That height is the
+ * largest at which the row still fits the container at 1440 without bleeding
+ * off the left edge.
  *
  * The two pull-ins are unequal and oddly specific because the seam between two
  * panels is not the gap between their boxes: each image carries a different
  * amount of transparent padding around its parallelogram, and dropping the
- * middle panel by `mt-20` slides its slanted edges sideways by 0.577·80 ≈ 46px
+ * middle panel by `mt-24` slides its slanted edges sideways by 0.577·96 ≈ 55px
  * on top of that. These values were solved against the actual alpha edges of
  * the artwork (fitted lines, not the image boxes) to leave a ~4px hairline on
- * both seams. They are only valid for h-88 + mt-20 with this art — if any of
- * those change, re-solve rather than nudging.
+ * both seams. They are only valid for h-105 + mt-24 with this art — if any of
+ * those change, re-solve rather than nudging. Every term in the gap expression
+ * is linear in the panel height, so the set scales together: these are the
+ * original h-88 values (318 / 203 / 80) scaled by 420/352.
  *
  * The mobile values are that same solution scaled by 152/352 ≈ 0.431. Every
  * term in the gap expression is linear in the panel height, so scaling the
@@ -50,8 +54,8 @@ const FADE_MS = 1000;
  */
 const PANEL = [
   "aspect-900/518",
-  "-ml-[137px] mt-[34px] aspect-900/579 md:-ml-[318px] md:mt-20",
-  "-ml-[88px] aspect-900/700 md:-ml-[203px]",
+  "-ml-[137px] mt-[34px] aspect-900/579 md:-ml-[380px] md:mt-24",
+  "-ml-[88px] aspect-900/700 md:-ml-[242px]",
 ];
 
 export default function RotatingPhotos() {
@@ -96,7 +100,7 @@ export default function RotatingPhotos() {
       {PANEL.map((panelClass, slot) => (
         <div
           key={slot}
-          className={`relative h-38 shrink-0 drop-shadow-[0_24px_50px_rgba(0,0,0,0.6)] md:h-88 ${panelClass}`}
+          className={`relative h-38 shrink-0 drop-shadow-[0_24px_50px_rgba(0,0,0,0.6)] md:h-105 ${panelClass}`}
         >
           {aboutPhotoBatches.map((photos, b) => {
             const active = b === batch;
