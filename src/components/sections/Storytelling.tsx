@@ -28,9 +28,9 @@ export default function Storytelling() {
           </Reveal>
         </div>
 
-        {/* Event photos — three interlocking parallelograms that cycle through
-            batches. Panel geometry and the reasoning behind it live in
-            RotatingPhotos. */}
+        {/* Event photos — three interlocking, pre-masked parallelograms with the
+            center panel dropped below the outer pair, rotating through the
+            four-photo set. Geometry details live in RotatingPhotos. */}
         <Reveal delay={0.15}>
           <RotatingPhotos />
         </Reveal>

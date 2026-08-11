@@ -7,7 +7,8 @@ All paths below are referenced from `src/lib/content.ts`. Drop files with these
 exact names, or edit `content.ts` to point at your own names.
 
 ## Game screenshots → `public/screens/`
-- `shot-1.jpg`, `shot-2.jpg`, `shot-3.jpg`, `shot-4.jpg`
+- `shot-1.jpg` through `shot-4.jpg`
+- `shot-5.webp` through `shot-12.webp`
 - ~1600×900 (16:9), JPG/WebP.
 
 ## Team photos → `public/team/`
@@ -17,7 +18,8 @@ exact names, or edit `content.ts` to point at your own names.
 - Portrait 3:4, ~600×800.
 
 ## "About" event photos → `public/about/`
-- `event-1.jpg`, `event-2.jpg`
+- `event-diagonal-1.png` through `event-diagonal-4.png`
+- 1016×1033 transparent PNGs with matching diagonal masks.
 
 ## Partner logos → `public/partners/`
 - `france.svg`, `goethe.svg`, `qene.svg`, `africa.svg`,

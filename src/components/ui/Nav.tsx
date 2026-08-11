@@ -82,7 +82,7 @@ export default function Nav() {
           {nav.map((item, index) => (
             <li key={item.href}>
               <a
-                href={item.href}
+                href={item.label === "Contact" ? "#contact" : item.href}
                 className={`group relative font-brand text-lg font-black uppercase tracking-[0.12em] transition-colors hover:text-mist xl:text-[1.35rem] ${
                   index === 0 ? "text-mist" : "text-mist/65"
                 }`}
@@ -151,7 +151,7 @@ export default function Nav() {
                   transition={{ duration: 0.4, delay: 0.06 + i * 0.07, ease: [0.16, 1, 0.3, 1] }}
                 >
                   <a
-                    href={item.href}
+                    href={item.label === "Contact" ? "#contact" : item.href}
                     onClick={() => setOpen(false)}
                     className="font-brand text-4xl font-black uppercase tracking-[0.1em] text-mist"
                   >

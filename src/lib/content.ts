@@ -32,6 +32,14 @@ export const screenshots = [
   { src: "/screens/shot-2.jpg", alt: "Veiled — ruined street at night" },
   { src: "/screens/shot-3.jpg", alt: "Veiled — flooded underpass" },
   { src: "/screens/shot-4.jpg", alt: "Veiled — abandoned home" },
+  { src: "/screens/shot-5.webp", alt: "Veiled — foggy neighborhood street" },
+  { src: "/screens/shot-6.webp", alt: "Veiled — abandoned industrial tunnel" },
+  { src: "/screens/shot-7.webp", alt: "Veiled — ruined neighborhood roadway" },
+  { src: "/screens/shot-8.webp", alt: "Veiled — damaged residential alley" },
+  { src: "/screens/shot-9.webp", alt: "Veiled — abandoned two-story interior" },
+  { src: "/screens/shot-10.webp", alt: "Veiled — debris-filled interior" },
+  { src: "/screens/shot-11.webp", alt: "Veiled — eerie room with seated figures" },
+  { src: "/screens/shot-12.webp", alt: "Veiled — makeshift exterior scaffolding" },
 ];
 
 export const team = [
@@ -57,31 +65,24 @@ export const team = [
   },
 ];
 
-/**
- * Event / award photos for the storytelling section, as batches of three.
- *
- * The section shows one batch at a time in three interlocking parallelogram
- * panels, cycling through the batches. Each entry is a pre-skewed transparent
- * image, and the three panels have *different* silhouettes — so position within
- * a batch is meaningful: index 0 is always the left panel, 1 the middle, 2 the
- * right. A photo cut for one panel will not fit another.
- */
-export const aboutPhotoBatches: { src: string; alt: string }[][] = [
-  [
-    { src: "/about/event-3.png", alt: "The team at the Ethio-French Crea-Tech Forum" },
-    { src: "/about/event-2.png", alt: "The team with a mentor" },
-    { src: "/about/event-1.png", alt: "Elder Studios receiving an award" },
-  ],
-  [
-    { src: "/about/event-b2-1.webp", alt: "The Ethio-French Crea-Tech Forum cohort on stage" },
-    { src: "/about/event-b2-2.webp", alt: "The team showing VEILED at their booth" },
-    { src: "/about/event-b2-3.webp", alt: "The team with an award at the Crea-Tech Forum" },
-  ],
-  [
-    { src: "/about/event-b3-1.webp", alt: "Presenting VEILED to a room of players" },
-    { src: "/about/event-b3-2.webp", alt: "Players trying VEILED at the studio booth" },
-    { src: "/about/event-b3-3.webp", alt: "The team at Craft Addis" },
-  ],
+/** Pre-masked event photos for the four-panel storytelling ribbon. */
+export const aboutPhotos = [
+  {
+    src: "/about/event-diagonal-1.png",
+    alt: "Elder Studios team at the Ethio-French Crea-Tech Forum",
+  },
+  {
+    src: "/about/event-diagonal-2.png",
+    alt: "Elder Studios presenting VEILED at the Ethio-French Crea-Tech Forum",
+  },
+  {
+    src: "/about/event-diagonal-3.png",
+    alt: "Elder Studios team at Craft Addis",
+  },
+  {
+    src: "/about/event-diagonal-4.png",
+    alt: "Visitors playing VEILED at the Ethio-French Crea-Tech Forum",
+  },
 ];
 
 /** Partner / supporter logos (white, transparent). */

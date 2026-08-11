@@ -2,69 +2,35 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "motion/react";
-import { aboutPhotoBatches } from "@/lib/content";
+import { aboutPhotos } from "@/lib/content";
 
 /**
- * The three interlocking event photos, cycling through the batches in
- * `aboutPhotoBatches` — all three panels swapping together on a crossfade.
+ * Three interlocking event photos, rotating through the full four-photo set.
+ * The source PNGs already contain matching transparent diagonal masks, so
+ * their boxes only need a consistent overlap to form a continuous ribbon.
  *
- * Every image in a batch is stacked inside its panel and rendered from the
- * start, with the inactive ones at opacity 0. That costs one decode per photo
- * up front (they're small WebPs) and buys a crossfade that can never show a
- * half-loaded image or a flash of empty panel.
- *
- * The panel geometry — uniform height, the middle one dropped, and the two
- * pull-ins — lives in Storytelling.tsx and is tuned against the exact alpha
- * edges of this artwork. Each slot's images all share one silhouette, so
- * swapping them cannot disturb it.
+ * The center panel is dropped below the outer two, matching the original
+ * composition. The panel boxes are wider than the source aspect ratio so the
+ * edited square masks create the broad horizontal ribbon used in the design.
+ * Because each mask slopes left as it descends, that vertical offset changes
+ * the overlap needed on either side of the center panel; the unequal pull-ins
+ * below keep both diagonal seams narrow and even.
  */
 
+const VISIBLE_PHOTOS = 3;
 const AUTOPLAY_MS = 4000;
-const FADE_MS = 1000;
-
-/**
- * Per-panel classes, left to right.
- *
- * The three silhouettes share a 60° slant but have different aspect ratios, so
- * sizing them by *width* (the obvious thing) gives three different heights and a
- * row that steps upward to the right. The design has all three the same height,
- * tops and bottoms flush, with the middle panel dropped below the line — hence
- * a uniform `h-105` plus a per-panel `aspect-*` matching that panel's artwork,
- * and `items-start` on the row to align the outer two. That height is the
- * largest at which the row still fits the container at 1440 without bleeding
- * off the left edge.
- *
- * The two pull-ins are unequal and oddly specific because the seam between two
- * panels is not the gap between their boxes: each image carries a different
- * amount of transparent padding around its parallelogram, and dropping the
- * middle panel by `mt-24` slides its slanted edges sideways by 0.577·96 ≈ 55px
- * on top of that. These values were solved against the actual alpha edges of
- * the artwork (fitted lines, not the image boxes) to leave a ~4px hairline on
- * both seams. They are only valid for h-105 + mt-24 with this art — if any of
- * those change, re-solve rather than nudging. Every term in the gap expression
- * is linear in the panel height, so the set scales together: these are the
- * original h-88 values (318 / 203 / 80) scaled by 420/352.
- *
- * The mobile values are that same solution scaled by 152/352 ≈ 0.431. Every
- * term in the gap expression is linear in the panel height, so scaling the
- * height, both pull-ins and the middle panel's drop by one factor keeps the
- * seams proportional (~1.7px) instead of needing a second solve. At that size
- * the row is ~470px, so it deliberately bleeds off the left edge rather than
- * being squeezed to fit — the same treatment the design gives it on desktop.
- */
-const PANEL = [
-  "aspect-900/518",
-  "-ml-[137px] mt-[34px] aspect-900/579 md:-ml-[380px] md:mt-24",
-  "-ml-[88px] aspect-900/700 md:-ml-[242px]",
+const FADE_MS = 900;
+const PANEL_POSITION = [
+  "",
+  "-ml-[104px] mt-[30px] md:-ml-[300px] md:mt-24",
+  "-ml-[69px] md:-ml-[196px]",
 ];
 
 export default function RotatingPhotos() {
-  const [batch, setBatch] = useState(0);
+  const [start, setStart] = useState(0);
   const rootRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
 
-  // Rotate only while the section is actually on screen. Nothing here is
-  // visible when it isn't, so there's no reason to keep swapping.
   useEffect(() => {
     if (reduced) return;
     const el = rootRef.current;
@@ -75,45 +41,47 @@ export default function RotatingPhotos() {
       if (timer) clearInterval(timer);
       timer = null;
     };
-    const start = () => {
+    const startRotation = () => {
       stop();
       timer = setInterval(
-        () => setBatch((b) => (b + 1) % aboutPhotoBatches.length),
+        () => setStart((current) => (current + 1) % aboutPhotos.length),
         AUTOPLAY_MS,
       );
     };
 
-    const io = new IntersectionObserver(
-      ([entry]) => (entry.isIntersecting ? start() : stop()),
+    const observer = new IntersectionObserver(
+      ([entry]) => (entry.isIntersecting ? startRotation() : stop()),
       { rootMargin: "10% 0px" },
     );
-    io.observe(el);
+    observer.observe(el);
 
     return () => {
-      io.disconnect();
+      observer.disconnect();
       stop();
     };
   }, [reduced]);
 
   return (
     <div ref={rootRef} className="flex items-start justify-end">
-      {PANEL.map((panelClass, slot) => (
+      {Array.from({ length: VISIBLE_PHOTOS }, (_, slot) => (
         <div
           key={slot}
-          className={`relative h-38 shrink-0 drop-shadow-[0_24px_50px_rgba(0,0,0,0.6)] md:h-105 ${panelClass}`}
+          className={`relative h-44 w-[14.5rem] shrink-0 drop-shadow-[0_24px_50px_rgba(0,0,0,0.6)] md:h-[30rem] md:w-[41.25rem] ${PANEL_POSITION[slot]}`}
         >
-          {aboutPhotoBatches.map((photos, b) => {
-            const active = b === batch;
+          {aboutPhotos.map((photo, photoIndex) => {
+            const active = photoIndex === (start + slot) % aboutPhotos.length;
+
             return (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                key={photos[slot].src}
-                src={photos[slot].src}
-                alt={photos[slot].alt}
+                key={photo.src}
+                src={photo.src}
+                alt={photo.alt}
                 aria-hidden={!active}
+                loading="lazy"
                 className={`absolute inset-0 h-full w-full transition-opacity ${
                   active ? "opacity-100" : "opacity-0"
-                } ${active && !reduced ? "animate-[photo-drift_12s_ease-out_forwards]" : ""}`}
+                }`}
                 style={{ transitionDuration: `${FADE_MS}ms` }}
               />
             );
