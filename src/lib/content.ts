@@ -28,10 +28,6 @@ export const game = {
 
 /** Game screenshots — drop files in /public/screens and update here. */
 export const screenshots = [
-  { src: "/screens/shot-1.jpg", alt: "Veiled — firelit interior" },
-  { src: "/screens/shot-2.jpg", alt: "Veiled — ruined street at night" },
-  { src: "/screens/shot-3.jpg", alt: "Veiled — flooded underpass" },
-  { src: "/screens/shot-4.jpg", alt: "Veiled — abandoned home" },
   { src: "/screens/shot-5.webp", alt: "Veiled — foggy neighborhood street" },
   { src: "/screens/shot-6.webp", alt: "Veiled — abandoned industrial tunnel" },
   { src: "/screens/shot-7.webp", alt: "Veiled — ruined neighborhood roadway" },
@@ -47,29 +43,39 @@ export const team = [
     name: "Makeda Yonas",
     roles: ["3D Artist & Animator", "Game Designer & Developer"],
     photo: "/team/makeda.png",
+    linkedin: "https://www.linkedin.com/in/makeda-yonas/",
   },
   {
     name: "Joshua Tadesse",
     roles: ["Lead Game Designer & Developer", "CEO"],
     photo: "/team/joshua.png",
+    linkedin: "https://www.linkedin.com/in/joshua-tadesse-aa8081225/",
   },
   {
     name: "Bisrat Ashagre",
     roles: ["Game Designer & Developer", "3D Artist", "UI/UX Designer"],
     photo: "/team/bisrat.png",
+    linkedin: "https://www.linkedin.com/in/bashagre07/",
   },
   {
     name: "Dagmawi Tsegaye",
     roles: ["Environment and Prop Artist"],
     photo: "/team/dagmawi.png",
+    linkedin: "https://www.linkedin.com/in/dagmawi-tsegaye-418899a4/",
   },
 ];
 
-/** Pre-masked event photos for the four-panel storytelling ribbon. */
+/**
+ * Pre-masked event photos for the three-panel storytelling ribbon. Nine
+ * unique photos (no duplicates — see /public/about), grouped into three
+ * batches of three. The whole batch swaps together every cycle, so each
+ * photo appears exactly once per full rotation instead of sliding in one
+ * slot at a time.
+ */
 export const aboutPhotos = [
   {
     src: "/about/event-diagonal-1.png",
-    alt: "Elder Studios team at the Ethio-French Crea-Tech Forum",
+    alt: "Elder Studios team at the Ethio-French Crea-Tech Forum booth",
   },
   {
     src: "/about/event-diagonal-2.png",
@@ -78,6 +84,26 @@ export const aboutPhotos = [
   {
     src: "/about/event-diagonal-3.png",
     alt: "Elder Studios team at Craft Addis",
+  },
+  {
+    src: "/about/event-1.png",
+    alt: "Elder Studios receiving an Addis Games Week award",
+  },
+  {
+    src: "/about/event-2.png",
+    alt: "Elder Studios receiving a certificate of achievement",
+  },
+  {
+    src: "/about/event-3.png",
+    alt: "Elder Studios team at the Ethio-French Crea-Tech Forum",
+  },
+  {
+    src: "/about/event-b2-1.webp",
+    alt: "Elder Studios team on stage at the Ethio-French Crea-Tech Forum",
+  },
+  {
+    src: "/about/event-b3-1.webp",
+    alt: "Elder Studios presenting VEILED on-screen at the Ethio-French Crea-Tech Forum",
   },
   {
     src: "/about/event-diagonal-4.png",

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import ImageFrame from "./ImageFrame";
 
 type Shot = { src: string; alt: string };
@@ -10,6 +11,14 @@ const SWIPE_THRESHOLD = 40; // accumulated horizontal wheel delta (px) before ad
 const GESTURE_GAP_MS = 150; // no wheel activity for this long = the swipe gesture has ended
 const AUTOPLAY_RESUME_MS = 1200; // resume autoplay this long after the user stops interacting
 
+// Slide direction: +1 travels to the next slide (incoming from the right),
+// -1 travels to the previous slide (incoming from the left).
+const slideVariants = {
+  enter: (direction: 1 | -1) => ({ x: `${direction * 100}%`, opacity: 0 }),
+  center: { x: "0%", opacity: 1 },
+  exit: (direction: 1 | -1) => ({ x: `${direction * -100}%`, opacity: 0 }),
+};
+
 export default function ScreenshotCarousel({
   screenshots,
   className = "",
@@ -18,6 +27,7 @@ export default function ScreenshotCarousel({
   className?: string;
 }) {
   const [index, setIndex] = useState(0);
+  const [direction, setDirection] = useState<1 | -1>(1);
   const containerRef = useRef<HTMLDivElement>(null);
   const autoplayRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const autoplayResumeRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -35,6 +45,7 @@ export default function ScreenshotCarousel({
   const restartAutoplay = () => {
     pauseAutoplay();
     autoplayRef.current = setInterval(() => {
+      setDirection(1);
       setIndex((i) => (i + 1) % screenshots.length);
     }, AUTOPLAY_MS);
   };
@@ -50,6 +61,7 @@ export default function ScreenshotCarousel({
   }, [screenshots.length]);
 
   const goSlide = (dir: 1 | -1) => {
+    setDirection(dir);
     setIndex((i) => (i + dir + screenshots.length) % screenshots.length);
   };
 
@@ -60,6 +72,7 @@ export default function ScreenshotCarousel({
   };
 
   const goToManual = (i: number) => {
+    setDirection(i > index ? 1 : -1);
     setIndex(i);
     restartAutoplay();
   };
@@ -106,12 +119,27 @@ export default function ScreenshotCarousel({
 
   return (
     <div ref={containerRef} className={`relative mx-auto w-full ${className}`}>
-      <ImageFrame
-        src={shot.src}
-        alt={shot.alt}
-        label={`Screenshot ${index + 1}`}
-        className="aspect-video w-full rounded-sm border border-white/5"
-      />
+      <div className="relative aspect-video w-full overflow-hidden rounded-sm border border-white/5">
+        <AnimatePresence initial={false} custom={direction} mode="popLayout">
+          <motion.div
+            key={shot.src}
+            custom={direction}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute inset-0"
+          >
+            <ImageFrame
+              src={shot.src}
+              alt={shot.alt}
+              label={`Screenshot ${index + 1}`}
+              className="h-full w-full"
+            />
+          </motion.div>
+        </AnimatePresence>
+      </div>
 
       <button
         type="button"

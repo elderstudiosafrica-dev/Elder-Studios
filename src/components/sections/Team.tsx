@@ -16,13 +16,21 @@ export default function Team() {
       <div className="mx-auto mt-28 grid max-w-[1360px] grid-cols-2 gap-x-4 gap-y-14 md:grid-cols-4 md:gap-x-0">
         {team.map((member, i) => (
           <Reveal key={member.name} delay={i * 0.1} className="flex flex-col items-center text-center">
-            <ImageFrame
-              src={member.photo}
-              alt={member.name}
-              label={member.name}
-              className="aspect-[3/4] w-full max-w-[350px] rounded-sm transition-transform duration-500 hover:scale-[1.03]"
-              frameClassName="bg-[#101d22]"
-            />
+            <a
+              href={member.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${member.name} on LinkedIn`}
+              className="w-full max-w-[350px]"
+            >
+              <ImageFrame
+                src={member.photo}
+                alt={member.name}
+                label={member.name}
+                className="aspect-[3/4] w-full rounded-sm transition-transform duration-500 hover:scale-[1.03]"
+                frameClassName="bg-[#101d22]"
+              />
+            </a>
             <h3 className="mt-5 font-brand text-2xl text-mist sm:mt-7 sm:text-3xl md:text-[2.25rem]">
               {member.name}
             </h3>

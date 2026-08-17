@@ -5,7 +5,11 @@ import { useReducedMotion } from "motion/react";
 import { aboutPhotos } from "@/lib/content";
 
 /**
- * Three interlocking event photos, rotating through the full four-photo set.
+ * Three interlocking event photo panels. aboutPhotos is grouped into batches
+ * of three (one photo per panel); the whole batch crossfades to the next
+ * batch together, so every photo appears exactly once per full rotation
+ * instead of sliding through one slot at a time.
+ *
  * The source PNGs already contain matching transparent diagonal masks, so
  * their boxes only need a consistent overlap to form a continuous ribbon.
  *
@@ -17,22 +21,27 @@ import { aboutPhotos } from "@/lib/content";
  * below keep both diagonal seams narrow and even.
  */
 
-const VISIBLE_PHOTOS = 3;
+const PANELS_PER_BATCH = 3;
 const AUTOPLAY_MS = 4000;
-const FADE_MS = 900;
+const FADE_MS = 1400;
 const PANEL_POSITION = [
   "",
   "-ml-[104px] mt-[30px] md:-ml-[300px] md:mt-24",
-  "-ml-[69px] md:-ml-[196px]",
+  "-ml-[80px] md:-ml-[226px]",
 ];
 
+const batches = Array.from(
+  { length: Math.ceil(aboutPhotos.length / PANELS_PER_BATCH) },
+  (_, i) => aboutPhotos.slice(i * PANELS_PER_BATCH, i * PANELS_PER_BATCH + PANELS_PER_BATCH),
+);
+
 export default function RotatingPhotos() {
-  const [start, setStart] = useState(0);
+  const [batchIndex, setBatchIndex] = useState(0);
   const rootRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
 
   useEffect(() => {
-    if (reduced) return;
+    if (reduced || batches.length <= 1) return;
     const el = rootRef.current;
     if (!el) return;
 
@@ -44,7 +53,7 @@ export default function RotatingPhotos() {
     const startRotation = () => {
       stop();
       timer = setInterval(
-        () => setStart((current) => (current + 1) % aboutPhotos.length),
+        () => setBatchIndex((current) => (current + 1) % batches.length),
         AUTOPLAY_MS,
       );
     };
@@ -63,13 +72,15 @@ export default function RotatingPhotos() {
 
   return (
     <div ref={rootRef} className="flex items-start justify-end">
-      {Array.from({ length: VISIBLE_PHOTOS }, (_, slot) => (
+      {PANEL_POSITION.map((posClass, slot) => (
         <div
           key={slot}
-          className={`relative h-44 w-[14.5rem] shrink-0 drop-shadow-[0_24px_50px_rgba(0,0,0,0.6)] md:h-[30rem] md:w-[41.25rem] ${PANEL_POSITION[slot]}`}
+          className={`relative h-44 w-[14.5rem] shrink-0 drop-shadow-[0_24px_50px_rgba(0,0,0,0.6)] md:h-[30rem] md:w-[41.25rem] ${posClass}`}
         >
-          {aboutPhotos.map((photo, photoIndex) => {
-            const active = photoIndex === (start + slot) % aboutPhotos.length;
+          {batches.map((batch, i) => {
+            const photo = batch[slot];
+            if (!photo) return null;
+            const active = i === batchIndex;
 
             return (
               // eslint-disable-next-line @next/next/no-img-element
@@ -79,8 +90,8 @@ export default function RotatingPhotos() {
                 alt={photo.alt}
                 aria-hidden={!active}
                 loading="lazy"
-                className={`absolute inset-0 h-full w-full transition-opacity ${
-                  active ? "opacity-100" : "opacity-0"
+                className={`absolute inset-0 h-full w-full object-cover object-center transition-[opacity,transform] ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                  active ? "opacity-100 scale-100" : "opacity-0 scale-[1.04]"
                 }`}
                 style={{ transitionDuration: `${FADE_MS}ms` }}
               />
